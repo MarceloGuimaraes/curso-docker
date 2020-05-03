@@ -85,14 +85,14 @@ docker image build -t ex-build-dev .
 # Execução do container remapeando e alterando a porta de execução definida no descritor
 # -it -> modo interativo para ver o log no console
 # -v ./build-dev:/app  -> está mapeando o WORKDIR (diretório atual da máquina q contem o arquivo run.py) para o '/app'
-curso-docker$ docker container run -it -v ./build-dev:/app -p 80:8000 --name python-server ex-build-dev
+ docker container run -it -v ./build-dev:/app -p 80:8000 --name python-server ex-build-dev
 
 # No console será exibido o log da execução do servidor
 # Para visualizar a página estática, acesse http://localhost:80
 
 # Outro Exemplo
 # Criar um container para  **LER** o log/volume que o container anterior gerou
-curso-docker$ docker container run -it --volumes-from=python-server debian cat /log/http-server.log
+ docker container run -it --volumes-from=python-server debian cat /log/http-server.log
 
 # REDES:
 
@@ -134,6 +134,33 @@ docker container exec -it container3 ping 172.17.0.1
 docker network connect bridge container3
 
 docker network disconnect bridge container3
+
+
+# PROJETO: cadastro Simples
+# Criar o arquivo app.js no diretório backend
+# Criar o arquivo index.html no diretório frontend
+# Criar o arquivo docker-compose.yml na raiz do diretório node-mongo-compose
+
+# Entrar na pasta backend e criar o arquivo descritor do Node 
+# Pré requisito é q o node/npm esteja instalado:
+ npm init -y
+# O resultado será a criação do arquivo package.json
+
+# Realizar a instalação dos pacotes 
+npm i --save  body-parser@1.17.2  cors@2.8.3  express@4.15.3  mongoose@4.11.1  node-restful@0.2.6 
+
+# Após a instalação o pacote node-modules poderá ser removido: rm -rf node-modules
+
+# Criar o arquivo docker-compose.yml
+# Executar o comando para ler o arquivo yml e subir/executar todos os container/serviços configurados no arquivo
+docker-compose up
+
+# O resultado será a exibição dos LOGS do backend, mongodb e do frontend
+# Para testar o frontend: 
+#     - Acesse http://localhost:80 onde será exibido a página com o texto 'Frontend'
+
+# Para testar o backend: 
+#     - Acesse http://localhost:3000 onde será exibido a página com o texto 'Backend'
 
 
 
