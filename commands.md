@@ -162,8 +162,6 @@ docker-compose up
 # Para testar o backend: 
 #     - Acesse http://localhost:3000 onde será exibido a página com o texto 'Backend'
 
-
-
 # PROJETO: email-worker-compose
 # Docker Postgres
 # Listar os banco de dados do serviço levantado 
@@ -172,6 +170,7 @@ docker-compose exec db psql -U postgres -c '\'
 # Outra maneira de listar as bases usando SELECT
 docker-compose exec db psql -U postgres -c 'SELECT datname FROM pg_database'
 
+# Executar o comando abaixo onde será executa os comandos a partir do arquivo check.sql
 docker-compose exec db psql -U postgres -f ./scripts/check.sql
 
 docker-compose logs -f -t
