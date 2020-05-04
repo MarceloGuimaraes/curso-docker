@@ -164,8 +164,14 @@ docker-compose up
 
 
 
+# PROJETO: email-worker-compose
 # Docker Postgres
-docker-compose exec db psql -U postgres -c '\l'
+# Listar os banco de dados do serviço levantado 
+docker-compose exec db psql -U postgres -c '\'
+
+# Outra maneira de listar as bases usando SELECT
+docker-compose exec db psql -U postgres -c 'SELECT datname FROM pg_database'
+
 docker-compose exec db psql -U postgres -f ./scripts/check.sql
 
 docker-compose logs -f -t
