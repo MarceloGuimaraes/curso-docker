@@ -191,6 +191,32 @@ docker-compose logs -f -t
 
 # Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
 
+# Configuração do nginx como proxy reverso para redirecionar as requisições para a aplicação Sender.py
+# O que melhora a camada de segurança
+
+# criar o arquivo default.config no diretorio nginx para configurar: 
+## direcionamentos da pagina index.html/index.htm
+## direcionamento para as páginas de erro 500
+## direcionamento para a rota '/api', fazendo o proxy reverso (proxy_pass) para 'app', que foi configurado no compose
+## OBS: app é o nome do serviço definido no compose, não é necessário saber o IP do serviço,
+##      pode acessar pelo nome dele, ex.: pode usar o 'db', 
+
+# Adicionar a configuração do proxy reverso no compose: 
+## - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+# Remover a porta 8080 da aplicação sender.
+# testar a api via curl:
+### curl --location --request POST 'http://localhost/api' \
+### --header 'Content-Type: application/json' \
+### --header 'Content-Type: text/plain' \
+### --data-raw '{ "assunto": "Assunto teste 1", "mensagem": "mensagem teste 1" }'
+
+# Para testar a pagina, acesse http://localhost/ onde será possível acompanhar a requisição no log
+
+
+
+
+
 docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
 
 # Escalando Docker
