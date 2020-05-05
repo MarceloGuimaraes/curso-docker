@@ -173,8 +173,23 @@ docker-compose exec db psql -U postgres -c 'SELECT datname FROM pg_database'
 # Executar o comando abaixo onde será executa os comandos a partir do arquivo check.sql
 docker-compose exec db psql -U postgres -f ./scripts/check.sql
 
-# Executar o comando para verificar os logs após levantar o docker com nginx
+# Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
 docker-compose logs -f -t
+
+# Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
+
+# Atualizar o docker-compose com a imagem do python que será exposto na porta 8080
+# Neste exemplo, as duas portas estarão disponíveis na camada web
+# criar um serviço em Python e fazer com que ao submeter uma página no nginx chame a rota do serviço enviando o assunto e a mensagem
+## criação do arquivo 'app.sh' para instalação de libraries do python
+## criação do arquivo 'sender.py' com o serviço send na rota '/' na porta 8080
+## para testar o serviço : 
+### curl --location --request POST 'http://localhost:8080' \
+### --header 'Content-Type: application/json' \
+### --header 'Content-Type: text/plain' \
+### --data-raw '{ "assunto": "Assunto teste 1", "mensagem": "mensagem teste 1" }'
+
+# Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
 
 docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
 

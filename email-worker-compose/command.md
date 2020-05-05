@@ -70,15 +70,32 @@ docker-compose exec db psql -U postgres -f ./scripts/check.sql
 ##  assunto  | character varying(100)      | not null
 ##  mensagem | character varying(250)      | not null
 
-
-# Adicionando o nginx para usar como proxy reverso
-# O nginx ira usar o volume para mapear o conteudo do diretorio web
+# atualizar o docker-compose com a imagem do nginx
+# O nginx será executado na porta 80 e ira usar o volume para mapear o conteudo do diretorio web
 ##  - ./web:/usr/share/nginx/html/
+
 
 # Levantar a instancia:
 docker-compose up 
 
-# Executar o comando para verificar os logs após levantar o docker com nginx
+# Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
 docker-compose logs -f -t
 
 # Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
+
+# Atualizar o docker-compose com a imagem do python que será exposto na porta 8080
+# Neste exemplo, as duas portas estarão disponíveis na camada web
+# criar um serviço em Python e fazer com que ao submeter uma página no nginx chame a rota do serviço enviando o assunto e a mensagem
+## criação do arquivo 'app.sh' para instalação de libraries do python
+## criação do arquivo 'sender.py' com o serviço send na rota '/' na porta 8080
+## para testar o serviço : 
+### curl --location --request POST 'http://localhost:8080' \
+### --header 'Content-Type: application/json' \
+### --header 'Content-Type: text/plain' \
+### --data-raw '{ "assunto": "Assunto teste 1", "mensagem": "mensagem teste 1" }'
+
+# Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
+
+
+
+
