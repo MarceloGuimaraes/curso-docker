@@ -173,6 +173,7 @@ docker-compose exec db psql -U postgres -c 'SELECT datname FROM pg_database'
 # Executar o comando abaixo onde será executa os comandos a partir do arquivo check.sql
 docker-compose exec db psql -U postgres -f ./scripts/check.sql
 
+# Executar o comando para verificar os logs após levantar o docker com nginx
 docker-compose logs -f -t
 
 docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'

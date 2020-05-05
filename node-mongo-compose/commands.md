@@ -4,7 +4,7 @@
 
 # Entrar na pasta backend e criar o arquivo descritor do Node 
 # Pré requisito é q o node/npm esteja instalado:
-curso-docker$ npm init -y
+npm init -y
 # O resultado será a criação do arquivo package.json
 
 # Realizar a instalação dos pacotes 
@@ -14,7 +14,7 @@ npm i --save  body-parser@1.17.2  cors@2.8.3  express@4.15.3  mongoose@4.11.1  n
 
 # Criar o arquivo docker-compose.yml
 # Executar o comando para ler o arquivo yml e subir/executar todos os container/serviços configurados no arquivo
-curso-docker$ docker-compose up
+docker-compose up
 
 # O resultado será a exibição dos LOGS do backend, mongodb e do frontend
 # Para testar o frontend: 

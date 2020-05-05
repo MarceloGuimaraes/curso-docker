@@ -13,10 +13,10 @@
 # Criar o arquivo docker-compose.yml
 # Executar o comando para ler o arquivo 'docker-compose.yml' e subir/executar todos os container/serviços configurados no arquivo 
 # -d -> executa em modo deamon
-curso-docker$ docker-compose up -d
+docker-compose up -d
 
 # Listar os banco de dados do serviço levantado 
-curso-docker$ docker-compose exec db psql -U postgres -c '\l'
+docker-compose exec db psql -U postgres -c '\l'
 
 ## resultado esperado:
 ###                               List of databases
@@ -37,13 +37,13 @@ docker-compose exec db psql -U postgres -c 'SELECT datname FROM pg_database'
 
 # Alterado o docker-compose.yml para dividir em volumes
 # Execute o comando para verificar separa listar o processo
-curso-docker$ docker-compose ps
+docker-compose ps
 
 # Se estiver em execução, utilize o comando abaixo para encerrar
 cusso-docker$ docker-compose down
 
 # Executar o comando para ler o arquivo 'docker-compose.yml' e subir/executar o volume criado.
-curso-docker$ docker-compose up -d
+docker-compose up -d
 
 # Executar o comando abaixo onde será executa os comandos a partir do arquivo check.sql
 docker-compose exec db psql -U postgres -f ./scripts/check.sql
@@ -69,3 +69,16 @@ docker-compose exec db psql -U postgres -f ./scripts/check.sql
 ##  data     | timestamp without time zone | not null default now()
 ##  assunto  | character varying(100)      | not null
 ##  mensagem | character varying(250)      | not null
+
+
+# Adicionando o nginx para usar como proxy reverso
+# O nginx ira usar o volume para mapear o conteudo do diretorio web
+##  - ./web:/usr/share/nginx/html/
+
+# Levantar a instancia:
+docker-compose up 
+
+# Executar o comando para verificar os logs após levantar o docker com nginx
+docker-compose logs -f -t
+
+# Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
