@@ -213,10 +213,21 @@ docker-compose logs -f -t
 
 # Para testar a pagina, acesse http://localhost/ onde será possível acompanhar a requisição no log
 
+# Configuração das redes : WEB e BANCO
+# Armazenar a mensagem no postgres
+# Atualizar o docker-compose com as configurações de networks para segregar a rede
+# A tag 'depends_on' serve para orquestrar inicialização a inicialização dos serviços no container
 
+# Após as tag, adicionar a instalação do pacote psycopg2 no script app.sh
+## Editar o script sender.py adicionando o import do psycopg2
+## Adicionar a conexão com o postgres na variável DSN
+## Adicionar a consulta no postgres na variável  SQL
+## Criar o metodo register_message
+## Adicionar no metodo send, a chamada ao método register_message 
 
-
-
+# Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
+# A msg será inseria no banco de dados postgres
+# Para consultar o banco de dados execute:
 docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
 
 # Escalando Docker
