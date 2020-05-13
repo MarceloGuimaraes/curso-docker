@@ -4,24 +4,21 @@ volumes:
 networks:
   banco:
   web:
+  fila:
 services:
   db:
     image: postgres:9.6
     volumes:
-      # Volume dos dados
+      #Volmues dos dados
       - dados:/var/lib/postgresql/data
-      # Scripts
+      #Scripts
       - ./scripts:/scripts
       - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-    environment: 
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=db
     networks:
       - banco
   frontend:
     image: nginx:1.13
-    volumes:
+    volumes: 
       # Site
       - ./web:/usr/share/nginx/html/
       # Configuração do proxy reverso
@@ -42,5 +39,22 @@ services:
     networks:
       - banco
       - web
+      - fila
     depends_on:
       - db
+      - queue
+  queue:
+    image: redis:3.2
+    networks: 
+      - fila
+  worker:
+    image: python:3.6
+    volumes:
+      # Worker
+      - ./worker:/worker
+    working_dir: /worker
+    command: bash ./app.sh
+    networks: 
+      - fila
+    depends_on:
+      - queue

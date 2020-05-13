@@ -230,5 +230,27 @@ docker-compose logs -f -t
 # Para consultar o banco de dados execute:
 docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
 
+
+# Adicionar o worker e a fila :
+## Editar o compose adicionando a rede fila.
+## Permitir acesso ao serviço 'app' em todas as redes
+## Adicionado os serviços queue e worker 
+## Adicionar o redis no arquivo requirements.txt do aplicativo
+## Alteração o arquivo sender.py da aplicação para ser uma classe e adicionar o envio da msg para a fila
+# Criação do diretorio worker
+## Criação do arquivo app.sh para realizar a instalação do redis e execução do worker
+## Criação do script worker.sh de execução da fila
+### mkdir worker && cd worker&& touch app.sh && chmod 777 app.sh
+### touch worker.py && chmod 777 worker.py
+
+## Levantar a instancia:
+docker-compose up 
+
+## Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
+docker-compose logs -f -t
+
+
+
+
 # Escalando Docker
 docker-compose up -d --scale worker=3

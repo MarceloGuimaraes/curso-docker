@@ -1,6 +1,6 @@
 # PROJETO: email-worker-compose
 
-# Criar o arquivo docker-compose.yml com a img do postgres
+# Criação o arquivo docker-compose.yml com a img do postgres
 ## version: '3'
 ## services: 
 ##    db:
@@ -10,7 +10,7 @@
 ##            - POSTGRES_PASSWORD=postgres
 ##            - POSTGRES_DB=db
 
-# Criar o arquivo docker-compose.yml
+# Criação o arquivo docker-compose.yml
 # Executar o comando para ler o arquivo 'docker-compose.yml' e subir/executar todos os container/serviços configurados no arquivo 
 # -d -> executa em modo deamon
 docker-compose up -d
@@ -75,17 +75,17 @@ docker-compose exec db psql -U postgres -f ./scripts/check.sql
 ##  - ./web:/usr/share/nginx/html/
 
 
-# Levantar a instancia:
+## Levantar a instancia:
 docker-compose up 
 
-# Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
+## Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
 docker-compose logs -f -t
 
 # Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
 
 # Atualizar o docker-compose com a imagem do python que será exposto na porta 8080
 # Neste exemplo, as duas portas estarão disponíveis na camada web
-# criar um serviço em Python e fazer com que ao submeter uma página no nginx chame a rota do serviço enviando o assunto e a mensagem
+# Criação um serviço em Python e fazer com que ao submeter uma página no nginx chame a rota do serviço enviando o assunto e a mensagem
 ## criação do arquivo 'app.sh' para instalação de libraries do python
 ## criação do arquivo 'sender.py' com o serviço send na rota '/' na porta 8080
 ## para testar o serviço : 
@@ -99,7 +99,7 @@ docker-compose logs -f -t
 # Configuração do nginx como proxy reverso para redirecionar as requisições para a aplicação Sender.py
 # O que melhora a camada de segurança
 
-# criar o arquivo default.config no diretorio nginx para configurar: 
+# Criação o arquivo default.config no diretorio nginx para configurar: 
 ## direcionamentos da pagina index.html/index.htm
 ## direcionamento para as páginas de erro 500
 ## direcionamento para a rota '/api', fazendo o proxy reverso (proxy_pass) para 'app', que foi configurado no compose
@@ -128,7 +128,7 @@ docker-compose logs -f -t
 ## Editar o script sender.py adicionando o import do psycopg2
 ## Adicionar a conexão com o postgres na variável DSN
 ## Adicionar a consulta no postgres na variável  SQL
-## Criar o metodo register_message
+## Criação o metodo register_message
 ## Adicionar no metodo send, a chamada ao método register_message 
 
 # Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
@@ -136,5 +136,23 @@ docker-compose logs -f -t
 # Para consultar execute:
 docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
 
+
+# Adicionar o worker e a fila :
+## Editar o compose adicionando a rede fila.
+## Permitir acesso ao serviço 'app' em todas as redes
+## Adicionado os serviços queue e worker 
+## Adicionar o redis no arquivo requirements.txt do aplicativo
+## Alteração o arquivo sender.py da aplicação para ser uma classe e adicionar o envio da msg para a fila
+# Criação do diretorio worker
+## Criação do arquivo app.sh para realizar a instalação do redis e execução do worker
+## Criação do script worker.sh de execução da fila
+### mkdir worker && cd worker&& touch app.sh && chmod 777 app.sh
+### touch worker.py && chmod 777 worker.py
+
+## Levantar a instancia:
+docker-compose up 
+
+## Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
+docker-compose logs -f -t
 
 
