@@ -162,7 +162,7 @@ docker-compose logs -f -t
 ### Substituir de:'image: python:3.6'  para: 'build: worker' ( p/compose procurar o dockerfile criado)
 ### Substituir de:'command: bash ./app.sh'  para: 'command: worker.py' ( p/ usar o ENTRYPOINT adicionado como parametro no worker.py )
 
-## Levantar 3 instancias do worker:
+## Escalando o worker com 3 instancias
 docker-compose up -d --scale worker=3
 
 ## Executar o comando para verificar os logs do serviço de worker
@@ -176,3 +176,18 @@ docker-compose logs -f -t worker
 #### worker_1    | 2020-05-16T01:32:17.453621832Z Mensagem a Mensagem encaminhada com sucesso
 #### worker_3    | 2020-05-16T01:32:24.445559747Z Mensagem b Mensagem encaminhada com sucesso
 #### worker_2    | 2020-05-16T01:32:26.929310644Z Mensagem v Mensagem encaminhada com sucesso
+
+
+# Usar variáveis de ambiente
+## Adicionado variáveis de ambiente no arquivo sender.py para o database e para a fila
+## Adicionado variáveis de ambiente no arquivo worker.py para a fila
+## Adicionado as variáveis na tag enviroment do docker-compose 
+
+## Escalando o worker com 3 instancias
+docker-compose up -d --scale worker=3
+
+## Executar o comando para verificar os logs do serviço de worker
+docker-compose logs -f -t worker
+
+# Para testar, acessar http://localhost/  e validar se a msg foi inserida no postgres
+docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
