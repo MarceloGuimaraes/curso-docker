@@ -76,7 +76,7 @@ docker-compose exec db psql -U postgres -f ./scripts/check.sql
 
 
 ## Levantar a instancia:
-docker-compose up 
+docker-compose up -d
 
 ## Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
 docker-compose logs -f -t
@@ -150,9 +150,29 @@ docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails
 ### touch worker.py && chmod 777 worker.py
 
 ## Levantar a instancia:
-docker-compose up 
+docker-compose up -d
 
 ## Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
 docker-compose logs -f -t
 
 
+# Como escalar um único container para vários serviços, gerar várias instâncias de um único container.
+## Criar o arquivo Dockerfile no diretórios worker.
+## Editar o serviço worker no compose, 
+### Substituir de:'image: python:3.6'  para: 'build: worker' ( p/compose procurar o dockerfile criado)
+### Substituir de:'command: bash ./app.sh'  para: 'command: worker.py' ( p/ usar o ENTRYPOINT adicionado como parametro no worker.py )
+
+## Levantar 3 instancias do worker:
+docker-compose up -d --scale worker=3
+
+## Executar o comando para verificar os logs do serviço de worker
+docker-compose logs -f -t worker
+
+# Para testar, acessar http://localhost/ onde será possível acompanhar a requisição no log
+#### log:
+#### worker_1    | 2020-05-16T01:31:44.419818360Z Encaminhando a mensagem: a
+#### worker_3    | 2020-05-16T01:31:53.414823769Z Encaminhando a mensagem: b
+#### worker_2    | 2020-05-16T01:32:00.903373346Z Encaminhando a mensagem: v
+#### worker_1    | 2020-05-16T01:32:17.453621832Z Mensagem a Mensagem encaminhada com sucesso
+#### worker_3    | 2020-05-16T01:32:24.445559747Z Mensagem b Mensagem encaminhada com sucesso
+#### worker_2    | 2020-05-16T01:32:26.929310644Z Mensagem v Mensagem encaminhada com sucesso

@@ -153,7 +153,7 @@ npm i --save  body-parser@1.17.2  cors@2.8.3  express@4.15.3  mongoose@4.11.1  n
 
 # Criar o arquivo docker-compose.yml
 # Executar o comando para ler o arquivo yml e subir/executar todos os container/serviços configurados no arquivo
-docker-compose up
+docker-compose up -d
 
 # O resultado será a exibição dos LOGS do backend, mongodb e do frontend
 # Para testar o frontend: 
@@ -244,10 +244,11 @@ docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails
 ### touch worker.py && chmod 777 worker.py
 
 ## Levantar a instancia:
-docker-compose up 
+docker-compose up -d 
 
 ## Executar o comando para verificar os logs após levantar o docker com nginx que será exposto na porta 80
 docker-compose logs -f -t
+
 
 
 
