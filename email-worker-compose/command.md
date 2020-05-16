@@ -191,3 +191,19 @@ docker-compose logs -f -t worker
 
 # Para testar, acessar http://localhost/  e validar se a msg foi inserida no postgres
 docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
+
+# Override: Criar um outro arquivo compose para sobreescrever uma variável de embiente
+## Criação do arquivo docker-compose.override.yml com a enviroment do DB_NAME do serviço app.
+## Editado o arquivo docker-compose.yml e alterado o valor da variável DB_NAME do serviço app.
+
+## Escalando o worker com 3 instancias
+docker-compose up -d --scale worker=3
+
+## Executar o comando para verificar os logs do serviço de worker
+docker-compose logs -f -t worker
+
+# Para testar, acessar http://localhost/  e validar se a msg foi inserida no postgres
+docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
+
+### resultado:
+10 | 2020-05-16 02:13:56.363261 | ultimo teste    | ultimo teste
